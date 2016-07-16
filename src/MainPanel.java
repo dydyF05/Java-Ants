@@ -10,6 +10,9 @@ public class MainPanel extends JPanel {
 	
 	MainPanel(){
 //		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+/*		
+ * 		###### On crée la grid panelée ici (des celle heritant de jpanel) #####
+ */
 		setLayout( new GridLayout( Application.ROWS, Application.COLUMNS ) );
 		int curX = 0;
 		int curRow = 0;
@@ -20,13 +23,14 @@ public class MainPanel extends JPanel {
 				Cell cell = new Cell(curY, curX, curRow, curCol);
 				cell.setBounds(curY, curX, Application.CELL_WIDTH, Application.CELL_HEIGHT);
 				add(cell);
-
+				cellArray[curCol][curRow] = cell;
 				curY += Application.CELL_HEIGHT;
 				curCol += 1;
 			}
 			curX += Application.CELL_WIDTH;
 			curRow += 1;
 		}
+//		
 //		repaint();
 	}
 }
