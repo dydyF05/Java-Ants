@@ -23,6 +23,7 @@ public class Application {
 	public static int pasSimulation = 0;
 	public static double totalNestPheromons = 0.0;
 	public static double totalFoodPheromons = 0.0;
+	private static boolean configDone = false;
 	
 	public static int antsNumber = 100;
 
@@ -36,6 +37,14 @@ public class Application {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		new InfosFrame("parametres");
+		
+	}
+	public static void createAntFrame(){
+		if(configDone)
+			return;
+		configDone = true;
+		System.out.println("evap: "+CellPanel.rateEvaporation);
 		JFrame frame = new JFrame ("Fourmis");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -99,7 +108,7 @@ public class Application {
 //			}
 			ControlPanel.udpateSteps();
 			System.out.println("#### end step ####");
-		} while ( Application.paused == false );
+		} while ( Application.paused == false && totalFoodInEnvironment > 0);
 		
 	}
 	public static void delay ()
