@@ -19,8 +19,10 @@ public class Application {
 	public static boolean paused = false;
 	public static boolean firstLaunch = true;
 	public static int totalFoodInEnvironment = 0;
-	public static double attente = 0.01;
+	public static double attente = 10.0;
 	public static int pasSimulation = 0;
+	public static double totalNestPheromons = 0.0;
+	public static double totalFoodPheromons = 0.0;
 	
 	public static int antsNumber = 1;
 
@@ -53,7 +55,7 @@ public class Application {
 		
 		ControlPanel controlPanel = new ControlPanel();
 		container.add(controlPanel, BorderLayout.NORTH);
-		controlPanel.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT - ANT_PANEL_HEIGHT - 50));
+		controlPanel.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT - ANT_PANEL_HEIGHT));
 		
 		frame.add(container);
 
@@ -76,25 +78,29 @@ public class Application {
 				Ant ant = iterator.next();
 				ant.live();
 			}
-//			System.out.println("### START Recolor ####");
+			System.out.println("     ENTRE DEUX     ");
 			Iterator<CellPanel> cellIte = allCells.iterator();
 			while (cellIte.hasNext()){
 				CellPanel cell = cellIte.next();
 				cell.evaporate();
 			}
-//			System.out.println("### End Recolor ####");
-//			try{
-//				Thread.sleep(10);
-//			}catch(InterruptedException e){
-//				e.printStackTrace();
-//			}
-//			Iterator<CellPanel> cellIte1 = allCells.iterator();
-//			while (cellIte1.hasNext()){
-//				CellPanel cell = cellIte1.next();
-//				cell.recolor();
-//			}
+			Application.totalNestPheromons = Application.totalNestPheromons*CellPanel.rateEvaporation;
+			Application.totalFoodPheromons = Application.totalFoodPheromons*CellPanel.rateEvaporation;
+			delay();
+			Iterator<CellPanel> cellIte1 = allCells.iterator();
+			while (cellIte1.hasNext()){
+				CellPanel cell = cellIte1.next();
+				cell.recolor();
+			}
+			ControlPanel.udpateSteps();
 			System.out.println("#### end step ####");
 		} while ( Application.paused == false );
 		
 	}
+	public static void delay ()
+	{
+		double ms = Application.attente;
+		long time = System.currentTimeMillis();
+		while (System.currentTimeMillis() - time<ms);
+	}	
 }

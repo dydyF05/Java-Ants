@@ -29,7 +29,6 @@ final public class Ant{
 	}
 	
 	public void live(){
-//		System.out.println("ant "+this.id+ " lives");
 		this.pickNestPheromonsIfOnNest();
 		if(this.carriesFood()){
 //			System.out.println(this + "  et retourne au nid");
@@ -44,9 +43,6 @@ final public class Ant{
 				this.wanderAround();
 			numberFromNestToFood++;
 		}
-//		this.previousCell.remove(this);
-//		this.currentCell.add(this);
-//		this.setVisible(true);
 	}
 	public void pickNestPheromonsIfOnNest(){
 		if(this.isNest(this.currentCell.column, this.currentCell.row))
@@ -55,8 +51,6 @@ final public class Ant{
 	public double getNestPheromonsToDrop(){
 		double toGive = 10;
 		this.nestPheromon = this.nestPheromon - toGive;
-//		if(this.nestPheromon < Cell.nestPhLeftAfterMaxVisitSteps)
-//			this.nestPheromon = 0;
 		return toGive;
 	}
 	public boolean hasNestPheromons(){
@@ -78,7 +72,7 @@ final public class Ant{
 				}
 			}
 		}
-//		System.out.println("nestph found: "+accessibleNeighbors.size());
+//		Le pb d'algo de retour au nid se résoud ici .. :/
 		if(accessibleNeighbors.size() > 0){
 			Collections.sort(accessibleNeighbors);
 			return accessibleNeighbors.get(accessibleNeighbors.size()-1);
@@ -103,19 +97,14 @@ final public class Ant{
 			for (int i_row = -1; i_row <= 1; i_row++){				
 				int vRow = this.currentCell.row + i_row;
 				if( isCellAccessible(vCol, vRow) && !this.isNest(vCol, vRow) && !this.isPreviousCell(vCol, vRow)){
-//					Priorité à la bouffe
 					if( this.isFood(vCol, vRow) )
 						return MainPanel.cellArray[vCol][vRow];
-//					On check le taux de pheromone
 					if( this.checkPheromonLevel(vCol, vRow) )
 						accessibleNeighbors.add(MainPanel.cellArray[vCol][vRow]);
 				}
 			}
 		}
-//		Collections.sort(accessibleNeighbors);
-//		System.out.println("foodPh found: "+ accessibleNeighbors.size());
 		if(accessibleNeighbors.size() > 0){
-//			return accessibleNeighbors.get(accessibleNeighbors.size()-1);
 			int maxIndex = accessibleNeighbors.size()-1;
 			Random rand = new Random();
 			while(maxIndex < 1){
@@ -147,7 +136,6 @@ final public class Ant{
 		if(previousCell.column == col && previousCell.row == row){
 			levPhrmn = randDouble *levPhrmn;
 		}
-//		System.out.println("custom f_lev:" + levPhrmn + ", rand:" + randDouble);
 		if(levPhrmn > randDouble)
 			return true;
 		return false;
@@ -160,71 +148,54 @@ final public class Ant{
 	private boolean checkNestPheromonLevel(int col, int row){
 		if(MainPanel.cellArray[col][row].nestPheromonLev < CellPanel.nestPhLeftAfterMaxVisitSteps)
 			return false;
-//		return true;
 		CellPanel c = MainPanel.cellArray[col][row];		
-////		La fourmis ne va pas forcément prendre le chemin défini comme meilleur, 
-////		il y a une marge proba trop importante pour que cette cell ne soit pas le meilleur choix
-////		Moins la piste est fraiche plus il y a de chance qu'on random donc qu'on renvoie null
+//		La fourmis ne va pas forcément prendre le chemin défini comme meilleur, 
+//		il y a une marge proba trop importante pour que cette cell ne soit pas le meilleur choix
+//		Moins la piste est fraiche plus il y a de chance qu'on random donc qu'on renvoie null
 		Random rand = new Random();
 		double randD = rand.nextDouble() / (CellPanel.currentMaxNestPherLev * Application.antsNumber);
 		double levNestPhrmn = c.nestPheromonLev / CellPanel.currentMaxNestPherLev;
 		if(previousCell.column == col && previousCell.row == row){
 			levNestPhrmn = randD *levNestPhrmn;
 		}
-		System.out.println("custom lev:" + levNestPhrmn + ", rand:" + randD);
+//		System.out.println("custom lev:" + levNestPhrmn + ", rand:" + randD);
 		if(randD < levNestPhrmn)
 			return true;
 		return false;
 	}
 	public void wanderAround(){
-//		System.out.println(this + "wandering");
-//		System.out.println("ant "+this.id+ " is looking for its next cell to visit");
 		int currentRow = this.currentCell.row;
 		int currentCol = this.currentCell.column;
-//		int multiplyingFactor = alea.nextInt(2) - 1;
 		int randRow = alea.nextInt(3) - 1;
 		int randCol = alea.nextInt(3) - 1 ;
-//		System.out.println("randrow: "+randRow + ", randCol:"+randCol);
 		
 		int nextCol = currentCol+randCol;
 		int nextRow = currentRow+randRow;
-//		System.out.println("first try of col: " + nextCol);
-//		System.out.println("first try of row: " + nextRow);
 		while(!this.isCellAccessible(nextCol, nextRow)){
 			nextCol = currentCol+alea.nextInt(3) - 1;
 			nextRow = currentRow+alea.nextInt(3) - 1;
 		}
-//		System.out.println("ant "+this.id+ " has found its next cell to visit");
 		this.moveToCell(nextCol, nextRow);
 	}
 	
 	private boolean isCellAccessible(int col, int row){
-//		System.out.println("On va chercher la cell "+ col+":"+row);
-//		System.out.println(MainPanel.cellArray.length);
 		 try {
-//			 if(!(MainPanel.cellArray[col][row].getClass() instanceof Cell))
-//				 return false;
 //			On check l'existence de la cell 
 			if(MainPanel.cellArray[col][row] == null){
-//				System.out.println("erreur 1");
 				return false;
 			}
 			if(MainPanel.cellArray.length < col || col < 0){
-//				System.out.println("erreur 2");
 				return false;
 			}
 			if(MainPanel.cellArray[col].length < row || row < 0){
-//				System.out.println("erreur 3");
 				return false;
 			}
-//				On check si elle a un obstacle
+//			On check si elle a un obstacle
 			if(MainPanel.cellArray[col][row].hasObstacle()){
-//				System.out.println("erreur 4");
 				return false;
 			}	
-//				On check si ce n'est pas la cell déjà en train d'être visitée
+//			On check si la fourmis n'est pas déjà sur cett cellule
 			if(col == this.currentCell.column && row == this.currentCell.row){
-//				System.out.println("erreur 5");
 				return false;
 			}
 //				La fourmi ne doit pas rentrer au nid tant qu'elle n'a pas trouvé de bouffe 
@@ -233,7 +204,6 @@ final public class Ant{
 //					return false;
 			return true;
 		 }catch (ArrayIndexOutOfBoundsException e) {
-//				System.out.println("erreur 6");
 				return false;
 	     }
 	}
@@ -248,7 +218,7 @@ final public class Ant{
 	}
 	
 	private void scavenge(){
-//		System.out.println(this + " va fouiller " + this.currentCell);
+//		La fourmis n'est pas censée se rappeler d'où elle vient donc bon... on oublie cette ligne
 //		cellsVisitedUntilFromFoodToNest.add(this.currentCell);
 		this.currentCell.antSearch(this);
 	}
@@ -262,7 +232,6 @@ final public class Ant{
 	}
 	public void returnToNest(){	
 //		La fourmis cherche à retourner au nid pr déposer la bouffe
-		
 //		Le nid est à portée
 		if(isNestInNeighborhood()){
 			this.previousCell = this.currentCell;
@@ -275,13 +244,11 @@ final public class Ant{
 		else{			
 			CellPanel cell = getBestCellToReturnToNest();
 			if(cell == null){
-//				System.out.println("La fourmis "+ this + " cherche à ramener la bouffe et erre");
 				this.wanderAround();
 			}
 			else{
 				this.previousCell = this.currentCell;
 				this.previousCell.leave(this);
-//				System.out.println("La fourmis "+ this + " cherche à ramener la bouffe et suit une piste");
 				this.currentCell = cell;
 				this.currentCell.visit(this);
 				this.currentCell.antSearch(this);

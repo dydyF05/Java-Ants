@@ -19,6 +19,8 @@ public class ControlPanel extends JPanel{
 	private static JLabel stepLabel = new JLabel();
 	private static JLabel foodLeft = new JLabel();
 	private static JLabel foodInNest = new JLabel();
+	private static JLabel nestPhers = new JLabel();
+	private static JLabel foodPhers = new JLabel();
 
 	ControlPanel(){
 		setLayout( new BorderLayout() );
@@ -26,11 +28,20 @@ public class ControlPanel extends JPanel{
 		foodLeft.setForeground(Color.RED);
 		this.addBtns();
 	}
+	private static double getRoundedDouble(double num){
+		num = 100*num;
+		num =  Math.round(num);
+		num = (double) num;
+		num = num/100;
+		return num;
+	}
 	public static void udpateSteps(){
 		stepLabel.setText("step: "+Application.pasSimulation);
 		foodLeft.setText(" - foodLeft: "+Application.totalFoodInEnvironment);
 		if(Application.nestCell != null)
 			foodInNest.setText(" - foodInNest: "+Application.nestCell.foodLeft);
+		foodPhers.setText(" - pherF: "+getRoundedDouble(Application.totalFoodPheromons));
+		nestPhers.setText(" - pherN: "+getRoundedDouble(Application.totalNestPheromons));
 	}
 	private void addBtns(){
 		JPanel blockPanel = new JPanel();
@@ -84,6 +95,8 @@ public class ControlPanel extends JPanel{
 		blockPanel.add(stepLabel);
 		blockPanel.add(foodLeft);
 		blockPanel.add(foodInNest);
+		blockPanel.add(foodPhers);
+		blockPanel.add(nestPhers);
 		
 		blockPanel.setAlignmentX(JComponent.LEFT_ALIGNMENT);
 		

@@ -57,7 +57,6 @@ public class CellPanel extends JPanel implements MouseListener, Comparable<CellP
 		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		setLayout( new FlowLayout(1) );
 		this.setBackground(emptyColor);
-//		repaint();
 	}
 //	##### Cell status #####	
 	public boolean hasAnt(){
@@ -132,8 +131,7 @@ public class CellPanel extends JPanel implements MouseListener, Comparable<CellP
 	}
 	public void recolor(){
 		if(this.hasAnt()){
-//			System.out.println("la fourmis a bien une ant");
-//			this.g.setColor(antColor);
+			System.out.println("la fourmis a bien une ant");
 			this.drawAnt();
 			return;
 		};
@@ -152,33 +150,22 @@ public class CellPanel extends JPanel implements MouseListener, Comparable<CellP
 			this.g.setColor(obstacleColor);
 			this.clearAntDrawing(obstacleColor);
 			this.setBackground(obstacleColor);
-//			this.drawAnt();
 			return;
 		}		
 //		On est dans le cas où la cell n'a ni nid, ni obstacle ni bouffe il faut checker 
 //		si elle a des phéromones et pas de fourmis
 		if(this.hasPheromons() && !this.hasAnt()){
 			this.colorWithPheromons();
-//			this.drawAnt();
 			return;
 		}
 		if(this.hasNestPheromons() && !this.hasAnt()){
 			this.colorWithNestPheromons();
-//			this.drawAnt();
 			return;
 		}
 		this.g.setColor(emptyColor);
 		this.setBackground(emptyColor);
-//		this.drawAnt();
-//		super.repaint();
-//		return;
 	}
 	private void drawAnt(){
-//		this.setBackground(antColor);
-//		if(this.visitingAntsSearchingFood.size() > 0){
-//			this.g.fillOval(0, 0, _x, _y);
-//			this.g.drawOval(x, y, width, height);
-//		}
 		Color firstC = this.g.getColor();
 		int _w = (int) (this.getSize().width * (9.2/10)) ;
 		int _h = (int) (this.getSize().height * (9.2/10)) ;
@@ -186,8 +173,8 @@ public class CellPanel extends JPanel implements MouseListener, Comparable<CellP
 		int _y = (int) (this.getSize().height - _h);
 		this.g.setColor(antColor);
 		this.g.fillOval(_x, _y, _w, _h);
+//		Il faut rajouter le point faisant office de nourriture sur la fourmis
 		if (visitingAntsSearchingNest.size() > 0){
-//			System.out.println("bouuuuffe");
 			int _w_pher = (int) (_w * .5);
 			int _h_pher = (int) (_h * .5);
 			int _x_pher = (int) (this.getSize().width - _w_pher)+3;
@@ -241,13 +228,16 @@ public class CellPanel extends JPanel implements MouseListener, Comparable<CellP
 			this.currentPheromoneLev = maxLevPheromone;
 		if(this.currentPheromoneLev > currentMaxPherLev)
 			currentMaxPherLev = this.currentPheromoneLev;
+		Application.totalFoodPheromons += pheromonDroppedOnVisit;
 	}
 	private void addNestPheromon(Ant ant){
-		this.nestPheromonLev += ant.getNestPheromonsToDrop();
+		double addedPhers = ant.getNestPheromonsToDrop();
+		this.nestPheromonLev += addedPhers;
 		if(this.nestPheromonLev > maxNestPheromon)
 			this.nestPheromonLev = maxNestPheromon;
 		if(this.nestPheromonLev > currentMaxNestPherLev)
 			currentMaxNestPherLev = this.nestPheromonLev;
+		Application.totalNestPheromons += addedPhers;
 	}
 	
 	@Override
@@ -262,8 +252,9 @@ public class CellPanel extends JPanel implements MouseListener, Comparable<CellP
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if(!Application.firstLaunch)
-			return;
+//		Décommenter pour empecher l'ajout de nourriture / obstacle / deplacement de nid
+//		if(!Application.firstLaunch)
+//			return;
 		switch(ConfigurationPanel.el){
 			case OBSTACLE:
 				this.setAsObstacle();
@@ -304,7 +295,6 @@ public class CellPanel extends JPanel implements MouseListener, Comparable<CellP
 		}
 //		Si la fourmis vient déposer sa bouffe sur le nid
 		if(this.hasNest() && ant.carriesFood()){
-//			System.out.println(ant + " depose sa bouffe au nid");
 			this.foodLeft += ant.foodCarried;
 			ant.foodCarried = 0;
 			ant.carriesFood = false;
@@ -312,7 +302,6 @@ public class CellPanel extends JPanel implements MouseListener, Comparable<CellP
 		}
 //		La fourmis porte de la bouffe et retourne au nid
 		if(!this.hasNest() && ant.carriesFood()){
-//			System.out.println(ant + " bouffe sur cell " + this);
 			this.addPheromon();
 		}
 //		La fourmis n'a pas de bouffe mais a du nestPheromon à déposer
@@ -352,23 +341,7 @@ public class CellPanel extends JPanel implements MouseListener, Comparable<CellP
 		this.currentPheromoneLev = this.currentPheromoneLev*rateEvaporation;
 		this.nestPheromonLev = this.nestPheromonLev*rateEvaporation;
 		this.recolor();
-//		this.repaint();
-//		if(this.hasAnt())
-//			System.out.println(this + " a une fourmis sur elle");
-//		this.delayOnlyIfNeedBe();
 	}
-
-//	private void delayOnlyIfNeedBe(){
-//		if(this.currentPheromoneLev < 0.001)
-//			return;
-//		if(this.hasFood())
-//			return;
-//		if(this.hasAnt())
-//			return;
-//		delay();
-//		this.recolor();
-//		this.repaint();
-//	}
 	
 	public String toString(){
 		return "coordonnees " + this.column + ":" + this.row;
@@ -384,10 +357,4 @@ public class CellPanel extends JPanel implements MouseListener, Comparable<CellP
 		return 0;
 	}
 
-	public static void delay ()
-	{
-		double ms = Application.attente;
-		long time = System.currentTimeMillis();
-		while (System.currentTimeMillis() - time<ms);
-	}	
 }
