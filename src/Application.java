@@ -20,6 +20,7 @@ public class Application {
 	public static boolean firstLaunch = true;
 	public static int totalFoodInEnvironment = 0;
 	public static double attente = 0.01;
+	public static int pasSimulation = 0;
 	
 	public static int antsNumber = 1;
 
@@ -61,6 +62,7 @@ public class Application {
 	}
 	public static void moveOneStep(){
 		do{
+			pasSimulation++;
 			System.out.println("#### start step ####");
 			if(firstLaunch){
 				firstLaunch = false;

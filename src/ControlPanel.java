@@ -8,6 +8,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class ControlPanel extends JPanel{
@@ -15,14 +16,22 @@ public class ControlPanel extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private static JLabel stepLabel = new JLabel();
+	private static JLabel foodLeft = new JLabel();
+	private static JLabel foodInNest = new JLabel();
 
 	ControlPanel(){
 		setLayout( new BorderLayout() );
 		this.setBackground(Color.LIGHT_GRAY);
-
+		foodLeft.setForeground(Color.RED);
 		this.addBtns();
 	}
-	
+	public static void udpateSteps(){
+		stepLabel.setText("step: "+Application.pasSimulation);
+		foodLeft.setText(" - foodLeft: "+Application.totalFoodInEnvironment);
+		if(Application.nestCell != null)
+			foodInNest.setText(" - foodInNest: "+Application.nestCell.foodLeft);
+	}
 	private void addBtns(){
 		JPanel blockPanel = new JPanel();
 		blockPanel.setBackground(Color.LIGHT_GRAY);
@@ -52,6 +61,7 @@ public class ControlPanel extends JPanel{
 		step.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				udpateSteps();
 //				System.out.println("click sur step !");
 				if(Application.nestCell != null && !Application.foodSet.isEmpty()){
 //					Si on l'application est lancée pour la première fois
@@ -71,6 +81,9 @@ public class ControlPanel extends JPanel{
 		blockPanel.add(play);
 		blockPanel.add(pause);
 		blockPanel.add(step);
+		blockPanel.add(stepLabel);
+		blockPanel.add(foodLeft);
+		blockPanel.add(foodInNest);
 		
 		blockPanel.setAlignmentX(JComponent.LEFT_ALIGNMENT);
 		

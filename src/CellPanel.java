@@ -279,6 +279,7 @@ public class CellPanel extends JPanel implements MouseListener, Comparable<CellP
 			default:
 				break;
 		}
+		ControlPanel.udpateSteps();
 	}
 
 	@Override
@@ -320,7 +321,6 @@ public class CellPanel extends JPanel implements MouseListener, Comparable<CellP
 		}
 //		La fourmis cherche de la bouffe et cette cellule en a
 		if(!this.hasNest() && this.hasFood() && !ant.carriesFood()){
-//			System.out.println("la fourmis a trouvé de la bouffe sur "+ this);
 			this.takeFood(ant);
 		}
 	}
@@ -336,11 +336,13 @@ public class CellPanel extends JPanel implements MouseListener, Comparable<CellP
 //		System.out.println(this + " a été quittée");
 	}
 	public void takeFood(Ant ant){
-		this.foodLeft -= 5;		
-		ant.foodCarried = 5;
+		int foodTook = 5;
+		this.foodLeft -= foodTook;		
+		ant.foodCarried = foodTook;
 		ant.carriesFood = true;
 		if(this.foodLeft < 0)
 			this.foodLeft = 0;
+		Application.totalFoodInEnvironment -= foodTook;
 	}
 	public void evaporate(){
 		if(this.g== null)
