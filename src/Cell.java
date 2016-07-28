@@ -1,28 +1,26 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import java.util.HashSet;
+import java.util.Observable;
+import java.util.Set;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.border.BevelBorder;
-
-public class Cell extends JPanel{
-	public int column;
-	public int row;
-	public int x;
-	public int y;
+public class Cell extends Observable {
+//	##### Cell environment parameters #####
+	public static double rateEvaporation = .9;
+	public static double pheromonDroppedOnVisit = 10.0;
+	public static double maxLevPheromone = 100.0;
+	public static double phLeftAfterMaxVisitAndHundredSteps = maxLevPheromone * (Math.pow(rateEvaporation, 50));
+	public static double currentMaxPherLev = 1;
+	public static double maxNestPheromon = 1000.0;
+	public static double nestPhLeftAfterMaxVisitSteps = maxNestPheromon * (Math.pow(rateEvaporation, 100));
+	public static double currentMaxNestPherLev = 1;
 	
-	Cell(int x, int y, int column, int row){
-		column = column;
-		row = row;
-		x=x;
-		y=y;
-		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		setLayout( new FlowLayout(1) );
-		this.setBackground(Color.white);
-		System.out.println("Instanciated col: "+ column + ", row: "+ row+"    x: "+x+", y:"+y);
-//		repaint();
+//	##### OwnCell's properties #####
+	public int antsNumber = 0;
+	private String status = "empty";	
+	private Set<Ant> ants = new HashSet<Ant>();
+	
+	Cell(){
+		this.addObserver(new CellObserver());
 	}
+	
+	
 }
