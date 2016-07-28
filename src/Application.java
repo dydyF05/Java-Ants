@@ -61,7 +61,7 @@ public class Application {
 	}
 	public static void moveOneStep(){
 		do{
-//			System.out.println("ntm fdp ");
+			System.out.println("#### start step ####");
 			if(firstLaunch){
 				firstLaunch = false;
 				for(int i = 0; i < antsNumber; i++){
@@ -91,6 +91,7 @@ public class Application {
 //				CellPanel cell = cellIte1.next();
 //				cell.recolor();
 //			}
+			System.out.println("#### end step ####");
 		} while ( Application.paused == false );
 		
 	}

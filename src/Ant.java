@@ -1,21 +1,14 @@
-import java.awt.Color;
-import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
-import javax.swing.border.BevelBorder;
-
-final public class Ant extends JPanel{
+final public class Ant{
 	public static int antNum = 1;
 	CellPanel previousCell;
 	CellPanel currentCell;
 	public boolean carriesFood = false;
 	private Random alea = new Random();
 	public int foodCarried = 0;
-//	public ArrayList<Cell> cellsVisitedUntilFromFoodToNest = new ArrayList<Cell>();
 	public int id;
 	public static double maxtNestPheromon = 1000;
 	public double nestPheromon = 0;
@@ -26,13 +19,6 @@ final public class Ant extends JPanel{
 		antNum++;
 		this.currentCell = startingCell;
 		this.previousCell = startingCell;
-
-//		this.setBackground(Color.orange);
-		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		setLayout( new FlowLayout(1) );
-//		this.currentCell.add(this);
-//		this.setVisible(true);
-//		this.cellsVisitedUntilFromFoodToNest.add(startingCell);
 	}
 	
 	public boolean carriesFood(){
@@ -48,7 +34,6 @@ final public class Ant extends JPanel{
 		if(this.carriesFood()){
 //			System.out.println(this + "  et retourne au nid");
 			this.returnToNest();
-			this.setBackground(Color.orange);
 		}
 		else{
 //			System.out.println(this + " et cherche de la bouffe");
@@ -58,7 +43,6 @@ final public class Ant extends JPanel{
 			else
 				this.wanderAround();
 			numberFromNestToFood++;
-			this.setBackground(Color.GREEN);
 		}
 //		this.previousCell.remove(this);
 //		this.currentCell.add(this);

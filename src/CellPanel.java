@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -185,20 +184,18 @@ public class CellPanel extends JPanel implements MouseListener, Comparable<CellP
 		int _h = (int) (this.getSize().height * (9.2/10)) ;
 		int _x = (int) (this.getSize().width - _w);
 		int _y = (int) (this.getSize().height - _h);
-		this.g.setColor(this.antColor);
+		this.g.setColor(antColor);
 		this.g.fillOval(_x, _y, _w, _h);
 		if (visitingAntsSearchingNest.size() > 0){
-			System.out.println("");
-			int _w_pher = (int) (_w / 1.1);
-			int _h_pher = (int) (_h / 1.1);
-			int _x_pher = (int) (this.getSize().width - _w - _w_pher);
-			int _y_pher = (int) (this.getSize().height - _h - _h_pher);
-			this.g.setColor(this.foodOnAnt);
-			this.g.fillOval(_x_pher, _y_pher, _w_pher, _h_pher);
+//			System.out.println("bouuuuffe");
+			int _w_pher = (int) (_w * .5);
+			int _h_pher = (int) (_h * .5);
+			int _x_pher = (int) (this.getSize().width - _w_pher)+3;
+			int _y_pher = (int) (this.getSize().height - _h_pher)+3;
+			this.g.setColor(foodColor);
+			this.g.fillOval((int)_x_pher/2, (int)_y_pher/2, _w_pher, _h_pher);
 		};
 		this.g.setColor(firstC);
-		
-//		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 	}
 	private void clearAntDrawing(Color fillColor){
 		this.g.setColor(fillColor);
@@ -300,7 +297,6 @@ public class CellPanel extends JPanel implements MouseListener, Comparable<CellP
 //		System.out.println(this + " est bien visitée et a désormais "+this.antsNumber + " fourmis sur elle");
 	}
 	public void antSearch(Ant ant){
-		System.out.println("chibar");
 		if(this.hasObstacle()){
 //			System.out.println(ant + " a trouvé le moyen d'aller sur un obstacle");
 			return;
