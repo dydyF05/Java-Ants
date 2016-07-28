@@ -74,18 +74,18 @@ final public class Ant{
 		}
 //		Le pb d'algo de retour au nid se résoud ici .. :/
 		if(accessibleNeighbors.size() > 0){
-			Collections.sort(accessibleNeighbors);
-			return accessibleNeighbors.get(accessibleNeighbors.size()-1);
+//			Collections.sort(accessibleNeighbors);
+//			return accessibleNeighbors.get(accessibleNeighbors.size()-1);
 //			System.out.println( this + " a trouvé des nest pheromones ds son voisinage au nb de " + accessibleNeighbors.size());
-//			int maxIndex = accessibleNeighbors.size()-1;
-//			if(maxIndex < 1)
-//				maxIndex = 1;
-//			Random rand = new Random();
-//			int randIndex = rand.nextInt(maxIndex);
-//			while(randIndex > accessibleNeighbors.size()-1){
-//				randIndex--;
-//			}
-//			bestCell = accessibleNeighbors.get(randIndex);
+			int maxIndex = accessibleNeighbors.size()-1;
+			if(maxIndex < 1)
+				maxIndex = 1;
+			Random rand = new Random();
+			int randIndex = rand.nextInt(maxIndex);
+			while(randIndex > accessibleNeighbors.size()-1){
+				randIndex--;
+			}
+			bestCell = accessibleNeighbors.get(randIndex);
 		}
 		return bestCell;
 	}

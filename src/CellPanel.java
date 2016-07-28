@@ -131,7 +131,7 @@ public class CellPanel extends JPanel implements MouseListener, Comparable<CellP
 	}
 	public void recolor(){
 		if(this.hasAnt()){
-			System.out.println("la fourmis a bien une ant");
+//			System.out.println("la fourmis a bien une ant");
 			this.drawAnt();
 			return;
 		};
@@ -162,6 +162,7 @@ public class CellPanel extends JPanel implements MouseListener, Comparable<CellP
 			this.colorWithNestPheromons();
 			return;
 		}
+		this.clearAntDrawing(emptyColor);
 		this.g.setColor(emptyColor);
 		this.setBackground(emptyColor);
 	}

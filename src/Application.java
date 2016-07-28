@@ -24,7 +24,7 @@ public class Application {
 	public static double totalNestPheromons = 0.0;
 	public static double totalFoodPheromons = 0.0;
 	
-	public static int antsNumber = 1;
+	public static int antsNumber = 100;
 
 
 	public static CellPanel nestCell = null;
@@ -86,12 +86,17 @@ public class Application {
 			}
 			Application.totalNestPheromons = Application.totalNestPheromons*CellPanel.rateEvaporation;
 			Application.totalFoodPheromons = Application.totalFoodPheromons*CellPanel.rateEvaporation;
-			delay();
-			Iterator<CellPanel> cellIte1 = allCells.iterator();
-			while (cellIte1.hasNext()){
-				CellPanel cell = cellIte1.next();
-				cell.recolor();
+//			delay();
+			try{
+				Thread.sleep((int) attente);
+			}catch(InterruptedException e){
+				e.printStackTrace();
 			}
+//			Iterator<CellPanel> cellIte1 = allCells.iterator();
+//			while (cellIte1.hasNext()){
+//				CellPanel cell = cellIte1.next();
+//				cell.recolor();
+//			}
 			ControlPanel.udpateSteps();
 			System.out.println("#### end step ####");
 		} while ( Application.paused == false );
