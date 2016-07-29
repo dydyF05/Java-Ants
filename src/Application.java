@@ -72,49 +72,38 @@ public class Application {
 		frame.setVisible(true);
 	}
 	public static void moveOneStep(){
-		do{
-			pasSimulation++;
-			System.out.println("#### start step ####");
-			if(firstLaunch){
-				firstLaunch = false;
-				for(int i = 0; i < antsNumber; i++){
-					allAnts.add(new Ant(nestCell));
+		try{
+			do{
+				pasSimulation++;
+//				System.out.println("#### start step ####");
+				if(firstLaunch){
+					firstLaunch = false;
+					for(int i = 0; i < antsNumber; i++){
+						allAnts.add(new Ant(nestCell));
+					}
 				}
-			}
-			
-			Iterator<Ant> iterator = allAnts.iterator();
-			while (iterator.hasNext()){
-				Ant ant = iterator.next();
-				ant.live();
-			}
-			System.out.println("     ENTRE DEUX     ");
-			Iterator<CellPanel> cellIte = allCells.iterator();
-			while (cellIte.hasNext()){
-				CellPanel cell = cellIte.next();
-				cell.evaporate();
-			}
-			Application.totalNestPheromons = Application.totalNestPheromons*CellPanel.rateEvaporation;
-			Application.totalFoodPheromons = Application.totalFoodPheromons*CellPanel.rateEvaporation;
-//			delay();
-			try{
-				Thread.sleep((int) attente);
-			}catch(InterruptedException e){
-				e.printStackTrace();
-			}
-//			Iterator<CellPanel> cellIte1 = allCells.iterator();
-//			while (cellIte1.hasNext()){
-//				CellPanel cell = cellIte1.next();
-//				cell.recolor();
-//			}
-			ControlPanel.udpateSteps();
-			System.out.println("#### end step ####");
-		} while ( Application.paused == false && totalFoodInEnvironment > 0);
-		
+				
+				Iterator<Ant> iterator = allAnts.iterator();
+				while (iterator.hasNext()){
+					Ant ant = iterator.next();
+					ant.live();
+				}
+				Iterator<CellPanel> cellIte = allCells.iterator();
+				while (cellIte.hasNext()){
+					CellPanel cell = cellIte.next();
+					cell.evaporate();
+				}
+				Application.totalNestPheromons = Application.totalNestPheromons*CellPanel.rateEvaporation;
+				Application.totalFoodPheromons = Application.totalFoodPheromons*CellPanel.rateEvaporation;
+				
+				ControlPanel.udpateSteps();
+//				System.out.println("#### end step ####");
+			} while ( Application.paused == false && totalFoodInEnvironment > 0);			
+			Thread.sleep((int) attente);
+//			ControlPanel.udpateSteps();
+		}catch(InterruptedException e){
+			e.printStackTrace();
+//			ControlPanel.udpateSteps();
+		}		
 	}
-	public static void delay ()
-	{
-		double ms = Application.attente;
-		long time = System.currentTimeMillis();
-		while (System.currentTimeMillis() - time<ms);
-	}	
 }

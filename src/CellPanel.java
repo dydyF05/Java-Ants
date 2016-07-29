@@ -91,7 +91,7 @@ public class CellPanel extends JPanel implements MouseListener, Comparable<CellP
 		
 	}
 	
-	private void emptyCell(){
+	public void emptyCell(){
 		if(this.hasNest()){
 			Application.nestCell = null;
 		};
@@ -107,14 +107,14 @@ public class CellPanel extends JPanel implements MouseListener, Comparable<CellP
 		this.foodLeft = 0;
 		this.setBackground(emptyColor);
 	}
-	private void setAsObstacle(){
+	public void setAsObstacle(){
 		this.emptyCell();
 		this.hasObstacle = true;
 		this.setBackground(Color.GRAY);
 		
 		Application.obstacleSet.add(this);
 	}
-	private void setAsFood(){
+	public void setAsFood(){
 		this.emptyCell();
 		this.foodLeft = Application.maxFoodPerCell;
 		Application.totalFoodInEnvironment += this.foodLeft;
@@ -122,9 +122,11 @@ public class CellPanel extends JPanel implements MouseListener, Comparable<CellP
 		this.setBackground(Color.RED);
 	}
 	private void colorFood(){
+		double factor = (double)  Application.maxFoodPerCell;
+		factor = 255 / factor;
 		int red = 255;
-		int green = 255 - ( ( (int) ( (this.foodLeft)*2.55 ) ) );
-		int blue = 255 - ( ( (int) ( (this.foodLeft)*2.55 ) ) );
+		int green = 255 - ( ( (int) ( (this.foodLeft)*factor ) ) );
+		int blue = 255 - ( ( (int) ( (this.foodLeft)*factor ) ) );
 		Color c = new Color(red, green, blue);
 		this.clearAntDrawing(c);
 		this.setBackground(c);
@@ -213,7 +215,7 @@ public class CellPanel extends JPanel implements MouseListener, Comparable<CellP
 			this.setBackground(c);
 		}
 	}
-	private void setAsNest(){
+	public void setAsNest(){
 		if(Application.nestCell != null){
 			Application.nestCell.emptyCell();
 		};
